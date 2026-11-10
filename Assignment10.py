@@ -36,9 +36,14 @@ for index, row in data_by_season.iterrows():
         teams["Fewer than 6 wins"].append(row["Team"])
 
 #Create another loop to display the results
+#I used AI to learn .items (access keys and values from a dictionary)
+#Loop 1: access the categories (column names)
+#Index: represents the column names and value contains the entire list under each category
 for index, value in teams.items():
     print()
+    #Print the category names
     print(index)
     print()
+    #Loop 2: access individual teams
     for team in value: 
         print(team)
