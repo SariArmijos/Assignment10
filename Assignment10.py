@@ -1,6 +1,6 @@
 import pandas as pd
-import numpy as np
 
+#Create a dictionary where values will be stored later
 teams = {
     "10 or more wins": [],
     "8-9 wins": [],
@@ -15,18 +15,30 @@ data_file = pd.read_csv("cfb.csv")
 #I learned that by adding the @ symbol, I can reference a Python variable that exists outside the DataFrame
 data_by_season = data_file.query("Season == @season_user")
 #Let the user know if the requested season is not found
-while data_by_season.isnull() == True :
+#I used AI to learn that .empty check whether the DataFrame has zero rows containing the value
+while data_by_season.empty:
     season_user = int(input("Season not found. Please, try again: "))
+    data_by_season = data_file.query("Season == @season_user")
 
-#Loop 1: 10 or more wins
-wins_10 = data_file.query("Win >= 10")
-print(wins_10["Team"])
-#Loop 2: 8-9 wins
-wins_8_9 = data_file.query("Win <= 9 and Win >= 8")
-print(wins_8_9["Team"])
-#Loop 3: 6-7 wins
-wins_6_7 = data_file.query("Win <= 7 and Win >= 6")
-print(wins_6_7["Team"])
-#Loop 4: Fewer than 6 wins
-wins_6 = data_file.query("Win < 6")
-print(wins_6["Team"])
+#Create a loop to go through each row
+for index, row in data_by_season.iterrows():
+    #Loop 1: 10 or more wins
+    if row["Win"] >= 10:
+        teams["10 or more wins"].append(row["Team"])
+    #Loop 2: 8-9 wins
+    elif row["Win"] >= 8:
+        teams["8-9 wins"].append(row["Team"])
+    #Loop 3: 6-7 wins
+    elif row["Win"] >= 6:
+        teams["6-7 wins"].append(row["Team"])
+    #Loop 4: Fewer than 6 wins
+    elif row["Win"] < 6:
+        teams["Fewer than 6 wins"].append(row["Team"])
+
+#Create another loop to display the results
+for index, value in teams.items():
+    print()
+    print(index)
+    print()
+    for team in value: 
+        print(team)
